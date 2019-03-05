@@ -1,0 +1,181 @@
+id,"partid","cond_order","cond_soepframe","soep_item",aspect_ind,"aspect",r_risk,r_frequency,r_social,r_situation
+1,"p4f8fpkh64","judg_asp","std","gen",0,"of course I am, nothing good comes from not taking a risk",34,38,36,42
+2,"p4f8fpkh64","judg_asp","std","gen",1,"who doesnt take risks",62,59,71,59
+3,"p4f8fpkh64","judg_asp","std","gen",2,"Wow! I love taking risks",60,66,61,78
+4,"pr33im0khj","asp_judg","rev","gen",0,"No, I enjoy taking risks.",79,78,95,97
+5,"pr33im0khj","asp_judg","rev","gen",1,"No",77,28,83,95
+6,"pdstj0n8k2","judg_asp","std","gen",0,"I am afraid of committing anything risky for fear of losing something.",0,0,51,63
+7,"pvi4j9ef41","judg_asp","rev","gen",0,"I'm scared",17,73,0,42
+8,"pfcib1keji","asp_judg","std","gen",0,"I take risks all the time",80,75,79,80
+9,"pfcib1keji","asp_judg","std","gen",1,"I like to try new things",73,65,71,70
+10,"pfcib1keji","asp_judg","std","gen",2,"I am not scared of much",65,43,41,55
+11,"pfcib1keji","asp_judg","std","gen",3,"Life would be dull without risks",89,30,33,75
+12,"psgt9qcep6","asp_judg","rev","gen",0,"I prefer to be assured of an outcome.",0,61,0,0
+13,"psgt9qcep6","asp_judg","rev","gen",1,"I dislike not knowing what will happen.",0,84,0,0
+14,"p3262keug8","judg_asp","std","gen",0,"i dont want to waste money i dont have",5,89,8,12
+15,"pdonrgal58","judg_asp","rev","gen",0,"I don't like to spend excess money.",0,11,1,70
+16,"p3262keug8","judg_asp","std","gen",1,"i dont want to take a chance i will lose",0,86,17,14
+17,"pdonrgal58","judg_asp","rev","gen",1,"I am concerned about the level of work I would have to do to get back to normal if I failed.",5,1,1,4
+18,"pdonrgal58","judg_asp","rev","gen",2,"If I fail then everyone will know.",2,2,33,68
+19,"p3262keug8","judg_asp","std","gen",2,"you dont know the outcome",16,73,57,80
+20,"pdonrgal58","judg_asp","rev","gen",3,"Small risks are tolerable because I don't have to lose a lot.",58,16,0,72
+21,"p3262keug8","judg_asp","std","gen",3,"i dont want to form a new habit",0,63,93,80
+22,"pc07a08lab","asp_judg","rev","gen",0,"There is something to gain",100,31,0,0
+23,"p3262keug8","judg_asp","std","gen",4,"i prefer to be safe",1,95,19,36
+24,"ph6c4hf8cu","judg_asp","std","gen",0,"I can't afford risks.",10,96,0,6
+25,"pc07a08lab","asp_judg","rev","gen",1,"There is something I want",100,86,0,1
+26,"ph6c4hf8cu","judg_asp","std","gen",1,"The idea of taking risks makes me super anxious.",10,100,61,55
+27,"p3262keug8","judg_asp","std","gen",5,"it doesnt usually have a good outcome",63,43,73,65
+28,"pc07a08lab","asp_judg","rev","gen",2,"I enjoy the challenge",92,6,4,3
+29,"pgbqe2ivdq","judg_asp","rev","gen",0,"Because I don't have anyone to bail me out if I mess up",20,58,0,75
+30,"ph6c4hf8cu","judg_asp","std","gen",2,"I think risk takers are generally lucky people and I am about the most unluckiest person on the planet.",10,100,61,55
+31,"pgbqe2ivdq","judg_asp","rev","gen",1,"I hate to fail",17,48,0,89
+32,"pc07a08lab","asp_judg","rev","gen",3,"I'm not really afraid of the failure",92,11,0,0
+33,"pgbqe2ivdq","judg_asp","rev","gen",2,"Sometimes I lack the confidence to take risks",24,67,15,57
+34,"pgbqe2ivdq","judg_asp","rev","gen",3,"I've taken chances in the past and they didn't go well",12,51,0,88
+35,"pgbqe2ivdq","judg_asp","rev","gen",4,"I would have to take the risk alone",32,99,5,100
+36,"pgbqe2ivdq","judg_asp","rev","gen",5,"Someone had a huge hand in zapping my confidence",9,59,19,100
+37,"p0q649f7q9","asp_judg","std","gen",0,"How much risk is acceptable risk? Determining that means success or failure.",69,66,32,100
+38,"p0q649f7q9","asp_judg","std","gen",1,"I tend to avoid high risk because I've sustained life-threatening losses before.",28,37,0,100
+39,"p0q649f7q9","asp_judg","std","gen",2,"My age enters onto it. I don't have as much time to recover from taking too much risk.",24,48,0,79
+40,"pr3sfhhpeu","judg_asp","std","gen",0,"Drug use",100,100,100,100
+41,"pgorjlma2i","judg_asp","rev","gen",0,"It depends on the situation. If it may be dangerous or not.",40,28,7,70
+42,"pr3sfhhpeu","judg_asp","std","gen",1,"Speeding",86,86,9,100
+43,"pr3sfhhpeu","judg_asp","std","gen",2,"Gambling",93,22,1,86
+44,"pbea3h8c87","asp_judg","rev","gen",0,"I like to try new things. ",100,10,0,67
+45,"pbea3h8c87","asp_judg","rev","gen",1,"No, because I'm scared of a lot of things, like heights",0,68,0,5
+46,"p3h45bs08l","asp_judg","std","gen",0,"I will only take small risks in my current situation. Save as much money as possible with minimul losses.",2,100,0,100
+47,"pfc8qjpri8","judg_asp","std","gen",0,"NO",NULL,NULL,NULL,NULL
+48,"p3h45bs08l","asp_judg","std","gen",1,"I need to pay the mortgage.",0,71,0,100
+49,"pfc8qjpri8","judg_asp","std","gen",1,"NONE",NULL,NULL,NULL,NULL
+50,"p3h45bs08l","asp_judg","std","gen",2,"I need to pay my bills.",0,73,0,100
+51,"pfc8qjpri8","judg_asp","std","gen",2,"keep going until you cannot think of any more",NULL,NULL,NULL,NULL
+52,"p3h45bs08l","asp_judg","std","gen",3,"I need to buy food.",2,100,81,100
+53,"p3h45bs08l","asp_judg","std","gen",4,"I won't risk losing my home.",0,31,0,0
+54,"pmqjpln9e3","asp_judg","std","gen",0,"I try and avoid taking risks.",99,99,0,100
+55,"p3h45bs08l","asp_judg","std","gen",5,"I will only take a chance if it appears to be in my favor.",2,17,2,100
+56,"pl2nrp2d2h","judg_asp","rev","gen",0,"I dont like risks if the benefits aren't worth it",29,69,17,59
+57,"pmqjpln9e3","asp_judg","std","gen",1,"I try and go with my gut instincts and voice of reason to avoid risky behavior.",92,93,0,96
+58,"p5j3thnogb","judg_asp","rev","gen",0,"chance of physical danger",0,6,37,90
+59,"p5j3thnogb","judg_asp","rev","gen",1,"Possibly violating rules",0,12,31,14
+60,"p5j3thnogb","judg_asp","rev","gen",2,"Failing and causing a bad outcome",18,63,35,45
+61,"pob34e2cm0","judg_asp","std","gen",0,"I don't like to get hurt.",11,30,0,89
+62,"pob34e2cm0","judg_asp","std","gen",1,"I am not in good health.",1,98,0,100
+63,"pc04p0ndrn","asp_judg","rev","gen",0,"I try to avoid so I know what to expect.",3,81,9,75
+64,"pob34e2cm0","judg_asp","std","gen",2,"I know how bad things can go.",0,13,86,25
+65,"pc04p0ndrn","asp_judg","rev","gen",1,"I don't like risks because that is when people get hurt.",14,64,65,36
+66,"pob34e2cm0","judg_asp","std","gen",3,"I live on kind of a knife edge.",5,14,19,78
+67,"pc04p0ndrn","asp_judg","rev","gen",2,"Avoiding is a good way to stay on track.",7,65,7,52
+68,"phr4dbis6r","judg_asp","rev","gen",0,"I don't want to be hurt.",5,62,46,73
+69,"pc04p0ndrn","asp_judg","rev","gen",3,"I avoid to keep myself on my planned tasks.",28,90,7,57
+70,"phr4dbis6r","judg_asp","rev","gen",1,"I was brought up to be conservative.",6,60,56,60
+71,"phr4dbis6r","judg_asp","rev","gen",2,"I am fearful.",5,40,40,60
+72,"p4l115od5v","asp_judg","std","gen",0,"I am fearful of physical risk",28,18,10,61
+73,"p4l115od5v","asp_judg","std","gen",1,"I don't like to fail",17,66,69,75
+74,"pr4f1reig1","asp_judg","rev","gen",0,"I am a single mom,  I am mature, I have learned from life",NULL,NULL,NULL,NULL
+75,"p4l115od5v","asp_judg","std","gen",2,"I don't like others to think I am incompetent by taking risks and failing",13,34,70,72
+76,"p1vis9jgq0","judg_asp","rev","gen",0,"I like the sure thing.",9,69,5,81
+77,"pr4f1reig1","asp_judg","rev","gen",1,"I have had problems because of risk ",NULL,NULL,NULL,NULL
+78,"p1vis9jgq0","judg_asp","rev","gen",1,"I don't have good luck.",25,55,68,91
+79,"pr4f1reig1","asp_judg","rev","gen",2,"Avoiding risks is prudent",NULL,NULL,NULL,NULL
+80,"p6sc27g6n8","judg_asp","std","gen",0,"I am not willing to take to take risks because I fear financial loss, mental or emotional harm, or physical harm.  ",9,3,4,71
+81,"p1vis9jgq0","judg_asp","rev","gen",2,"I think too hard about all the possibilities and often focus on the negatives.",15,91,9,64
+82,"pr4f1reig1","asp_judg","rev","gen",3,"Avoiding risks is mature",NULL,NULL,NULL,NULL
+83,"pr4f1reig1","asp_judg","rev","gen",4,"bgfshgfshs",NULL,NULL,NULL,NULL
+84,"p6sc27g6n8","judg_asp","std","gen",1,"I avoid risks because I do not like the unknown or any situation that isn't planned for and accounted for. ",23,24,21,58
+85,"p4l115od5v","asp_judg","std","gen",3,"I can't risk taking a chance when I have a family to take care of",16,84,10,38
+86,"pigl6mph69","asp_judg","std","gen",0,"I'm poor, and vulnerable, and failures could be catastrophic, so I avoid risk.",NULL,NULL,NULL,NULL
+87,"pigl6mph69","asp_judg","std","gen",1,"Risk stresses me out.",30,95,0,8
+88,"pmk7bbsa9k","asp_judg","rev","gen",0,"I take risks to profit personally",97,74,23,78
+89,"pmk7bbsa9k","asp_judg","rev","gen",1,"I take risks because they are usually fun",86,74,63,91
+90,"pmk7bbsa9k","asp_judg","rev","gen",2,"I take risks because I'm not afraid of failure",94,91,19,100
+91,"pmk7bbsa9k","asp_judg","rev","gen",3,"I only avoid risks I find to not have a worthwhile payoff",31,73,14,87
+92,"psk9b6s1j4","asp_judg","std","gen",0,"i sometimes like to take risks",52,56,52,57
+93,"psk9b6s1j4","asp_judg","std","gen",1,"sometimes the reward is worth it",52,52,55,52
+94,"p6sf43r91a","judg_asp","rev","gen",0,"I look ahead at possible consequences of my actions",6,62,35,86
+95,"p6sf43r91a","judg_asp","rev","gen",1,"I always try and look at the bigger picture",30,65,40,72
+96,"p6sf43r91a","judg_asp","rev","gen",2,"I have a lot on the line to be risking it",14,81,56,99
+97,"p56jepscab","judg_asp","std","gen",0,"I don't like uncertainty ",0,83,9,62
+98,"pv2hqjtsak","asp_judg","rev","gen",0,"i take risks for the thrill",93,27,13,13
+99,"p56jepscab","judg_asp","std","gen",1,"I want my life to be somewhat predictable",28,88,16,38
+100,"pv2hqjtsak","asp_judg","rev","gen",1,"i take risks for the potential reward",95,80,4,36
+101,"p56jepscab","judg_asp","std","gen",2,"Taking risks can backfire sometimes ",11,63,32,100
+102,"p51m1d9843","judg_asp","std","gen",0,"I enjoy living. ",0,100,0,100
+103,"p56jepscab","judg_asp","std","gen",3,"I'm content in my life right now, so I don't want to take any risks yet",25,79,25,70
+104,"p51m1d9843","judg_asp","std","gen",1,"life, money, risk of things i love",0,100,0,100
+105,"p51m1d9843","judg_asp","std","gen",2,"I can't think of more",0,100,0,0
+106,"p67815jegg","judg_asp","rev","gen",0,"I have concern about some things but if some others are risky and have a payoff I might try them.  Learning a new skill is something I don't mind.",37,59,38,40
+107,"p67815jegg","judg_asp","rev","gen",1,"I worry if something is immediatly physically dangerous.",27,33,23,35
+108,"p67815jegg","judg_asp","rev","gen",2,"I don't mind doing something if it's very fun.",72,60,34,72
+109,"p67815jegg","judg_asp","rev","gen",3,"I am sexually adventurous.",71,69,18,97
+110,"pvnlj59tle","asp_judg","std","gen",0,"avoid",NULL,NULL,NULL,NULL
+111,"puotio2nku","asp_judg","rev","gen",0,"the first reason is because i dislike uncertainty",0,10,0,0
+112,"p84keati5e","judg_asp","std","gen",0,"Fear of getting hurt.",1,4,0,10
+113,"p41oipmpg5","asp_judg","rev","gen",0,"Family",0,100,100,100
+114,"p84keati5e","judg_asp","std","gen",1,"F",48,48,47,49
+115,"p41oipmpg5","asp_judg","rev","gen",1,"money",100,25,81,0
+116,"p7j514egrk","judg_asp","rev","gen",0,"I cannot lose all my assts.",NULL,NULL,NULL,NULL
+117,"p84keati5e","judg_asp","std","gen",2,"Fear of losing money",0,7,0,8
+118,"p41oipmpg5","asp_judg","rev","gen",2,"obligations",0,88,100,26
+119,"p41oipmpg5","asp_judg","rev","gen",3,"time",7,90,66,95
+120,"p84keati5e","judg_asp","std","gen",3,"Some things just scare me.",0,2,0,10
+121,"p41oipmpg5","asp_judg","rev","gen",4,"embarassment",0,25,75,0
+122,"p7j514egrk","judg_asp","rev","gen",1,"Taking risks could increase my income.",NULL,NULL,NULL,NULL
+123,"p41oipmpg5","asp_judg","rev","gen",5,"reward",0,100,100,100
+124,"p1p93m6a4h","judg_asp","std","gen",0,"I want to try everything once ",87,35,15,87
+125,"p41oipmpg5","asp_judg","rev","gen",6,"consequences",0,0,68,0
+126,"p41oipmpg5","asp_judg","rev","gen",7,"worth",100,37,0,0
+127,"p7j514egrk","judg_asp","rev","gen",2,"I have to take risk judiciously.",NULL,NULL,NULL,NULL
+128,"p1p93m6a4h","judg_asp","std","gen",1,"Nothing ",87,35,15,87
+129,"p7j514egrk","judg_asp","rev","gen",3,"none",NULL,NULL,NULL,NULL
+130,"p7j514egrk","judg_asp","rev","gen",4,"none",NULL,NULL,NULL,NULL
+131,"pf495sukik","judg_asp","rev","gen",0,"I like new challenges",89,9,9,100
+132,"pf495sukik","judg_asp","rev","gen",1,"I have two children",0,100,3,100
+133,"pf495sukik","judg_asp","rev","gen",2,"I like new experiences",5,5,6,12
+134,"pf495sukik","judg_asp","rev","gen",3,"I have a lot of responsibility",6,0,4,23
+135,"pe7261avug","asp_judg","std","gen",0,"do i take risks?",82,43,68,34
+136,"pf495sukik","judg_asp","rev","gen",4,"I have bucket list of things I want to try",92,0,0,92
+137,"pe7261avug","asp_judg","std","gen",1,"what risks i have taken till now.",60,27,73,29
+138,"pf495sukik","judg_asp","rev","gen",5,"I'm getting older",5,5,6,12
+139,"pe7261avug","asp_judg","std","gen",2,"am i brave enough",54,80,34,72
+140,"pf495sukik","judg_asp","rev","gen",6,"Breaking something would really deter my life",92,0,0,92
+141,"p1g73h9h1g","asp_judg","rev","gen",0,"I tend to be cautious.",7,30,0,0
+142,"p1g73h9h1g","asp_judg","rev","gen",1,"I cannot afford the downside of the consideration, so I don't take the risk.",0,21,0,0
+143,"pr3fgsmfld","judg_asp","std","gen",0,"afraid of consequences",12,87,13,89
+144,"pr3fgsmfld","judg_asp","std","gen",1,"don't want to lose",15,22,16,81
+145,"p1g73h9h1g","asp_judg","rev","gen",2,"Most of the time, risks are not worth the potential cost.",4,34,0,0
+146,"prl66vp7gm","judg_asp","rev","gen",0,"I tend to prefer to be safe....not pick risky things",0,23,0,29
+147,"prl66vp7gm","judg_asp","rev","gen",1,"i am a fearful person",47,65,100,26
+148,"prl66vp7gm","judg_asp","rev","gen",2,"I don't jump out of planes or bungee jump",6,4,85,0
+149,"prl66vp7gm","judg_asp","rev","gen",3,"I prefer to invest in \"safe\" stocks",85,6,68,100
+150,"p5ndghkbin","judg_asp","std","gen",0,"can not afford to lose",20,44,2,15
+151,"pb1v2d5lmd","judg_asp","rev","gen",0,"Can I physically do it",5,82,82,80
+152,"puaekd90jg","asp_judg","rev","gen",0,"I dont like negative outcomes from taking risks.",0,79,0,79
+153,"pb1v2d5lmd","judg_asp","rev","gen",1,"Will it be fun",93,18,87,100
+154,"p6d5irmbd1","asp_judg","std","gen",0,"No. I prefer safety over anything. ",NULL,NULL,NULL,NULL
+155,"puaekd90jg","asp_judg","rev","gen",1,"I do not like being unsure of an outcome to take risks.",0,83,0,89
+156,"pb1v2d5lmd","judg_asp","rev","gen",2,"Will I get more from it than I give",71,10,11,89
+157,"puaekd90jg","asp_judg","rev","gen",2,"I believe that what can go wrong will go wrong.",0,83,0,83
+158,"pb1v2d5lmd","judg_asp","rev","gen",3,"Well unless its gambling, that I don't do much of.",0,5,0,79
+159,"p6d5irmbd1","asp_judg","std","gen",1,"I have children to think about. Some risks are not worth it. I need to have a safety net.",NULL,NULL,NULL,NULL
+160,"pb1v2d5lmd","judg_asp","rev","gen",4,"I am getting to old for to much risk",6,6,69,13
+161,"p6d5irmbd1","asp_judg","std","gen",2,"I need to have a net to fall back on. I have others to consider ",NULL,NULL,NULL,NULL
+162,"ppa2om583b","asp_judg","rev","gen",0,"I prefer to select safe choices",0,95,0,94
+163,"ppa2om583b","asp_judg","rev","gen",1,"I don't like loss",0,33,0,99
+164,"ppa2om583b","asp_judg","rev","gen",2,"I don't like to be embarrassed if a risky choice doesn't work out",3,26,58,18
+165,"p4qbqqsu1g","judg_asp","std","gen",0,"only myself to be concerned with",36,78,19,36
+166,"ppa2om583b","asp_judg","rev","gen",3,"I would rather have something even if it is smaller than lose everything",0,87,0,100
+167,"ppa2om583b","asp_judg","rev","gen",4,"I am fearful I will lose everything",0,7,0,59
+168,"ppa2om583b","asp_judg","rev","gen",5,"I don't want to feel greedy",3,31,0,72
+169,"pvcn4ugpbp","judg_asp","rev","gen",0,"want to avoid let-downs",77,57,28,67
+170,"pvcn4ugpbp","judg_asp","rev","gen",1,"don't want to get hurt in the end",72,58,30,71
+171,"pvcn4ugpbp","judg_asp","rev","gen",2,"fear",72,38,26,46
+172,"pvcn4ugpbp","judg_asp","rev","gen",3,"anxiety",60,39,27,48
+173,"pdtifg9hlc","asp_judg","std","gen",0,"Not enough money in savings to do anything risky",0,100,0,66
+174,"pdtifg9hlc","asp_judg","std","gen",1,"Happy where I'm at so no need to risk it",0,80,0,81
+175,"pdtifg9hlc","asp_judg","std","gen",2,"Risk causes stress which I don't want",14,84,0,79
+176,"pdtifg9hlc","asp_judg","std","gen",3,"Risk requires administration and more work",0,36,0,100
+177,"pdtifg9hlc","asp_judg","std","gen",4,"I pretty much have all I need",14,71,19,68
+178,"p6v4lq5ukc","asp_judg","rev","gen",0,"Yes, because Im a mother",NULL,NULL,NULL,NULL
+179,"pi58f51pmu","judg_asp","std","gen",0,"I do enjoy taking risks, because that's how you move forward in life and get big rewards",95,76,86,96
+180,"pi58f51pmu","judg_asp","std","gen",1,"Calculated risks are the best way to move forward in life",79,72,89,97
