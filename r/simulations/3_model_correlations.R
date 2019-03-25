@@ -14,12 +14,12 @@ learn_pred <- learn_pred[!is.na(i.sim), ]
 learn_pred[, c("pred_raw", "pred_noise") := NULL]
 
 learn_pred <- learn_pred %>%
-  filter(simulating.model != "meanofevid") %>%
   mutate(simulating.model = case_when(simulating.model == "mostext" ~ "EXTREME",
                                       simulating.model == "qt" ~ "QT",
                                       simulating.model == "sumofevid" ~ "WADD",
                                       simulating.model == "takethefirst" ~ "FIRST",
                                       simulating.model == "takethelast" ~ "LAST",
+                                      simulating.model == "meanofevid" ~ "MEAN",
                                       simulating.model == "tally" ~ "UNIT",
                                       simulating.model == "vu" ~ "VUM"))
 
@@ -36,7 +36,7 @@ for (ii in 1:max(learn_pred$i.sim)) {
   df <- learn_pred[learn_pred$i.sim == ii, ]
   
   # four error criteria, eight models, three Ns
-  df$id <- c(rep(1:150, 4*7), rep(1:200, 4*7), rep(1:250, 4*7))
+  df$id <- c(rep(1:150, 4*8), rep(1:200, 4*8), rep(1:250, 4*8))
   
   df_wide <- df %>%
     spread(simulating.model, pred_noise_rescale)
@@ -44,7 +44,7 @@ for (ii in 1:max(learn_pred$i.sim)) {
   for (jj in 1:nrow(mat_ind)) {
     cormats[[mat_ind$mat_ind[jj]]][[ii]] <-
       cor(df_wide[df_wide$N == mat_ind$Var1[jj] &
-                    df_wide$error_sd == mat_ind$Var2[jj], 5:11])
+                    df_wide$error_sd == mat_ind$Var2[jj], 5:12])
   }
 }
 

@@ -6,8 +6,7 @@ theme_set(theme_bw())
 # get and prepare data (we don't look at mean of evidence as it can be mathematically
 # shown that it is a special case of VUM with phi = 1)
 model_recov <- fread("data/simulations/model_recovery/model_recov.csv")
-model_recov <- model_recov[!is.na(i.sim) & simulating.model != "meanofevid" &
-                             fitting.model != "meanofevid", ]
+model_recov <- model_recov[!is.na(i.sim), ]
 
 # Table of r2
 model_recov[, .(R2 = mean(r2)), by = c("simulating.model", "fitting.model")]
@@ -77,9 +76,10 @@ ggsave("plots/simulations/r2_boxplot.pdf")
 model_recov <- model_recov %>%
   mutate(simulating.model = case_when(simulating.model == "mostext" ~ "EXTREME",
                                       simulating.model == "qt" ~ "QT",
-                                      simulating.model == "sumofevid" ~ "WADD",
+                                      simulating.model == "sumofevid" ~ "SUM",
                                       simulating.model == "takethefirst" ~ "FIRST",
                                       simulating.model == "takethelast" ~ "LAST",
+                                      simulating.model == "meanofevid" ~ "MEAN",
                                       simulating.model == "tally" ~ "UNIT",
                                       simulating.model == "vu" ~ "VUM"),
          fitting.model = case_when(fitting.model == "mostext" ~ "EXTREME",
@@ -87,6 +87,7 @@ model_recov <- model_recov %>%
                                    fitting.model == "sumofevid" ~ "WADD",
                                    fitting.model == "takethefirst" ~ "FIRST",
                                    fitting.model == "takethelast" ~ "LAST",
+                                   fitting.model == "meanofevid" ~ "MEAN",
                                    fitting.model == "tally" ~ "UNIT",
                                    fitting.model == "vu" ~ "VUM"))
   

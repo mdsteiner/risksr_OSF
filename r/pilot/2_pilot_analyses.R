@@ -135,10 +135,11 @@ ggplot(pilot, aes(x = med_social)) +
 pdf("plots/pilot/ratings_panel.pdf", width = 6, height = 6)
 pilot %>%
   select(starts_with("med_")) %>%
-  rename(riskiness = med_risk,
-         social = med_social,
-         situation = med_situation,
-         frequency = med_frequency) %>%
+  rename(SoE = med_risk,
+         Situation = med_situation,
+         Social = med_social,
+         Frequency = med_frequency) %>%
+  select(SoE, Situation, Social, Frequency) %>%
   pairs.panels(method = "spearman", lm = TRUE, hist.col = "skyblue", breaks = 10,
                cex = 1, cex.labels = 2)
 dev.off()
@@ -228,7 +229,7 @@ p_risk <- pilot_long %>%
   theme_bw() +
   labs(
     x = "",
-    y = "Risk"
+    y = "SoE"
   ) +
   theme(
     strip.text = element_text(size = 12, face = "bold"),
@@ -313,6 +314,6 @@ p_frequency <- pilot_long %>%
 pdf("plots/pilot/ratings_variation.pdf",
     width = 12, height = 6)
 
-p_risk + p_social + p_situation + p_frequency + plot_layout(ncol = 1)
+p_risk + p_situation + p_social + p_frequency + plot_layout(ncol = 1)
 dev.off()
 
