@@ -10,11 +10,11 @@ library(rstanarm)
 library(truncnorm)
 library(Rcpp)
 
-source("simulations/models_risksr.R")
+source("r/simulations/models_risksr.R")
 sourceCPP("cpp/vum_functions.cpp")
-source("simulations/rescale.R")
-source("simulations/loglik_fun.R")
-source("simulations/calculate_SMRD.R")
+source("r/simulations/rescale.R")
+source("r/simulations/loglik_fun.R")
+source("r/simulations/calculate_SMRD.R")
 
 ## Setup parallel processing: assign cpu cores
 nc = detectCores()
@@ -45,11 +45,11 @@ clusterEvalQ(cl, {
   library(truncnorm)
   library(Rcpp)
   # Add all of our custom functions here
-  source("simulations/models_risksr.R")
+  source("r/simulations/models_risksr.R")
   sourceCpp("cpp/vum_functions.cpp")
-  source("simulations/rescale.R")
-  source("simulations/loglik_fun.R")
-  source("simulations/calculate_SMRD.R")
+  source("r/simulations/rescale.R")
+  source("r/simulations/loglik_fun.R")
+  source("r/simulations/calculate_SMRD.R")
 })
 
 ## set seed
