@@ -11,7 +11,7 @@ library(truncnorm)
 library(Rcpp)
 
 source("simulations/models_risksr.R")
-sourceCPP("cpp/cpp_functions.cpp")
+sourceCPP("cpp/vum_functions.cpp")
 source("simulations/rescale.R")
 source("simulations/loglik_fun.R")
 source("simulations/calculate_SMRD.R")
@@ -46,7 +46,7 @@ clusterEvalQ(cl, {
   library(Rcpp)
   # Add all of our custom functions here
   source("simulations/models_risksr.R")
-  sourceCpp("cpp/cpp_functions.cpp")
+  sourceCpp("cpp/vum_functions.cpp")
   source("simulations/rescale.R")
   source("simulations/loglik_fun.R")
   source("simulations/calculate_SMRD.R")

@@ -1,4 +1,4 @@
-Rcpp::sourceCpp("cpp/cpp_functions.cpp")
+Rcpp::sourceCpp("cpp/vum_functions.cpp")
 library(truncnorm)
 
 models_risksr <- function(data, model, b_seeking = 0.5, b_avoiding = -0.5,
