@@ -3,8 +3,7 @@ library(tidyverse)
 library(scales)
 theme_set(theme_bw())
 
-# get and prepare data (we don't look at mean of evidence as it can be mathematically
-# shown that it is a special case of VUM with phi = 1)
+# get and prepare data
 model_recov <- fread("data/simulations/model_recovery/model_recov.csv")
 model_recov <- model_recov[!is.na(i.sim), ]
 
