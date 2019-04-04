@@ -4,6 +4,7 @@ library(patchwork)
 library(psych)
 library(tidytext)
 library(rstanarm)
+library(rmcorr)
 options(mc.cores = parallel::detectCores())
 
 pilot <- read_csv("data/pilot/pilot.csv")
@@ -132,17 +133,84 @@ ggplot(pilot, aes(x = med_social)) +
   )
 
 ### pairs panel plot for the different sources and contents ratings ============
+
 pdf("plots/pilot/ratings_panel.pdf", width = 6, height = 6)
-pilot %>%
-  select(starts_with("med_")) %>%
-  rename(SoE = med_risk,
-         Situation = med_situation,
-         Social = med_social,
-         Frequency = med_frequency) %>%
-  select(SoE, Situation, Social, Frequency) %>%
-  pairs.panels(method = "spearman", lm = TRUE, hist.col = "skyblue", breaks = 10,
-               cex = 1, cex.labels = 2)
+dat <- pilot_long %>%
+  mutate(r_risk = abs(r_risk)) %>%
+  rename(`|SoE|` = r_risk,
+         Situation = r_situation,
+         Social = r_social,
+         Frequency = r_frequency) %>%
+  select(`|SoE|`, Situation, Social, Frequency, partid)
+
+lab_cex = 2
+c_cex = 2
+p_cex = 1.1
+lwd = 2
+mar = c(2, 2, 0.3, 0.3)
+id = "partid"
+vars <- names(dat)
+vars <- vars[vars != id]
+nvars <- ncol(dat) - 1
+
+plot_mat <- matrix(NA, ncol = nvars, nrow = nvars)
+diag(plot_mat) <- "hist"
+plot_mat[upper.tri(plot_mat)] <- "cor"
+plot_mat[lower.tri(plot_mat)] <- "scatter"
+
+c_iter <- 1
+
+par(mar = mar, mfrow = c(nvars, nvars))
+
+for (nr in 1:nrow(plot_mat)) {
+  
+  for (nc in 1:ncol(plot_mat)) {
+
+    do <- plot_mat[nr, nc]
+    
+    if (do == "hist") {
+      
+      th <- hist(dat[[vars[nr]]], plot = FALSE)
+      hist(dat[[vars[nr]]], col = "skyblue", freq = FALSE,
+           ylim = c(0, max(th$density) + max(th$density) * .6),
+           xlab = "", ylab = "", main = "", yaxt = "n", xaxt = "n",
+           bty = "o")
+      axis(1, mgp=c(3, .6, 0))
+      text(x = mean(th$breaks), y = max(th$density) + max(th$density) * .3,
+           labels = vars[nr], cex = lab_cex)
+      box()
+      
+    } else if (do == "cor") {
+      
+      temp_cor <- rmcorr::rmcorr(id, vars[nr], vars[nc],
+                                 dat, CIs = "analytic",
+                                 nreps = 100, bstrap.out = FALSE)$r
+      
+      plot.new()
+      plot.window(xlim = c(0, 1), ylim = c(0, 1))
+      box()
+      text(x = .5, y = .5, labels = round(temp_cor, 2),cex = c_cex)
+      c_iter <- c_iter + 1
+      
+    } else if (do == "scatter") {
+      
+      plot(dat[[vars[nc]]], dat[[vars[nr]]], pch = 16,
+           cex = p_cex, xaxt = "n", yaxt = "n")
+      axis(2, mgp=c(3, .6, 0))
+      axis(1, mgp=c(3, .6, 0))
+      temp_mod <- lm(dat[[vars[nr]]] ~ dat[[vars[nc]]])
+      abline(temp_mod, col = "red", lwd = lwd)
+      
+      
+    }
+    
+    
+  }
+  
+}
+
 dev.off()
+
 ### sentiment ratings ==========================================================
 
 vline_data <- pilot %>%
@@ -194,7 +262,7 @@ ggplot(pilot_long, aes(x = r_risk, y = rating)) +
   geom_point(col = "#8c9196") +
   geom_smooth(method = "lm", se = FALSE, col = "blue") +
   geom_label(data = cors, aes(label = paste0("rho = ", round(cors, 2))), 
-             x = 3, y = 10.1)+
+             x = 30, y = 10.1)+
   facet_grid(n_aspects_cat ~ aspect_ind_cat) +
   theme_bw() +
   labs(

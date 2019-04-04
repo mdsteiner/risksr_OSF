@@ -1,6 +1,7 @@
 library(tidyverse)
 library(data.table)
-source("simulations/calculate_SMRD.R")
+library(tidytext)
+source("r/simulations/calculate_SMRD.R")
 
 # Read data
 aspects <- read_csv("data/pilot/aspects.csv", na = "NULL")
@@ -38,18 +39,16 @@ pl <- participants %>%
                                    TRUE ~ "seeking"),
          n_seeking = sum(r_risk_binary == "seeking"),
          n_avoiding = sum(r_risk_binary == "avoiding"),
+         r_risk = r_risk - 50,
          r_risk_s = scale(r_risk),
          r_social_s = scale(r_social),
          r_situation_s = scale(r_situation),
          r_frequency_s = scale(r_frequency),
-         r_risk = r_risk / 10,
-         r_social = r_social / 10,
-         r_situation = r_situation / 10,
-         r_frequency = r_frequency / 10,
-         med_risk = median(r_risk),
-         med_social = median(r_social),
-         med_situation = median(r_situation),
-         med_frequency = median(r_frequency)) %>%
+         m_risk = mean(r_risk),
+         m_risk_abs = mean(abs(r_risk)),
+         m_social = mean(r_social),
+         m_situation = mean(r_situation),
+         m_frequency = mean(r_frequency)) %>%
   ungroup()
 
 # get sentiments from the listed aspects
@@ -74,8 +73,8 @@ pl <- pl %>%
 # create a data frame with only one row per participant for the statistical analyses
 pd <- pl %>%
   select(partid, cond_order, cond_soepframe, age, sex, rating, n_seeking,
-         n_avoiding, med_risk, med_social, med_situation, m_sentiment, med_frequency,
-         l_sentiment, s_sentiment, SMRD, aspect_ind, med_frequency) %>%
+         n_avoiding, m_risk_abs, m_risk, m_social, m_situation, m_sentiment,
+         m_frequency, l_sentiment, s_sentiment, SMRD, aspect_ind) %>%
   group_by(partid) %>%
   top_n(n = 1, aspect_ind) %>%
   ungroup()  %>%
