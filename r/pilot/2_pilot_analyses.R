@@ -136,12 +136,10 @@ ggplot(pilot, aes(x = med_social)) +
 
 pdf("plots/pilot/ratings_panel.pdf", width = 6, height = 6)
 dat <- pilot_long %>%
-  mutate(r_risk = abs(r_risk)) %>%
-  rename(`|SoE|` = r_risk,
-         Situation = r_situation,
+  rename(Experience = r_situation,
          Social = r_social,
          Frequency = r_frequency) %>%
-  select(`|SoE|`, Situation, Social, Frequency, partid)
+  select(Experience, Social, Frequency, partid)
 
 lab_cex = 2
 c_cex = 2
@@ -198,8 +196,6 @@ for (nr in 1:nrow(plot_mat)) {
            cex = p_cex, xaxt = "n", yaxt = "n")
       axis(2, mgp=c(3, .6, 0))
       axis(1, mgp=c(3, .6, 0))
-      temp_mod <- lm(dat[[vars[nr]]] ~ dat[[vars[nc]]])
-      abline(temp_mod, col = "red", lwd = lwd)
       
       
     }
