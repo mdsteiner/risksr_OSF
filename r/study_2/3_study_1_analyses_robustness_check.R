@@ -1021,10 +1021,10 @@ dev.off()
 # 
 # # save model outputs so they don't have to be rerun again
 # save(soc_mod, sit_mod, act_mod, cnt_mod, snt_mod, freq_mod,
-#      file = "data/study_2/contents_models.RData")
+#      file = "data/study_2/contents_models_s2.RData")
 # 
 # load model outputs
-load("data/study_2/contents_models.RData")
+load("data/study_2/contents_models_s2.RData")
 
 # Inspect model outputs
 
