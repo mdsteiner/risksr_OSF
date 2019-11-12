@@ -8,6 +8,7 @@ library(Rcpp)
 library(rstanarm)
 library(brms)
 library(beanplot)
+library(viridis)
 options(mc.cores = parallel::detectCores())
 sourceCpp("cpp/vum_functions.cpp")
 source("r/study_1/helper.R")
@@ -119,6 +120,9 @@ tibble(
 
 ggsave("plots/study_1/pro_contra_distribution.pdf",
        width = 8, height = 6)
+
+# relation between SMRD and risk preference
+cor(study$SMRD, study$rating, method = "spearman")
 
 ### Strength of evidence -------------------------------------------------------
 
@@ -528,7 +532,7 @@ axis(1, c(-1, 1, 2, 20), labels = c("", "All", "> 1 Aspect", ""), lwd = 2,
      cex.axis = 1.5)
 axis(2, c(-1, .5, .75, 1, 1.25, 1.5), labels = TRUE, lwd = 2, las = 1,
      cex.axis = 1.5)
-mtext("Models", side = 1, line = 4, cex = 1.4, font = 2, padj = -.4)
+mtext("Sample", side = 1, line = 4, cex = 1.4, font = 2, padj = -.4)
 mtext(expression(phi), side = 2, line = 4, cex = 1.4, font = 2, padj = .2)
 
 arrows(2.6, .95, 2.6,.6, lwd = 4)
@@ -793,6 +797,8 @@ pl_social + pl_situation + pl_frequency + pl_active + pl_control + pl_sentiment 
 dev.off()
 
 # Stacked barplots of the different categories
+
+bar_cols <- inferno(6, alpha = .9, begin = .2, end = 1)
 sb_social <- study_long %>%
   filter(r_risk_binary != "neutral") %>%
   group_by(r_risk_binary) %>%
@@ -806,7 +812,7 @@ sb_social <- study_long %>%
   geom_bar(stat = "identity", position = "fill") +
   geom_text(aes(x = r_risk_binary, y = rep(c(.1, .5), each = 2),
                 label = paste0(round(percent *100),"%")), size = 5,
-            fontface = "bold") +
+            fontface = "bold", col = "white") +
   scale_y_continuous(expand = c(0, 0)) +
   theme_bw() +
   labs(x = "Aspects",
@@ -818,7 +824,7 @@ sb_social <- study_long %>%
     axis.title = element_text(size = 13,face = "bold"),
     title = element_text(size = 14, face = "bold")
   ) +
-  scale_fill_manual(values = c("#a5d7d2", "#1ea5a5"))
+  scale_fill_manual(values = bar_cols[1:2])
 
 sb_situation <- study_long %>%
   filter(r_risk_binary != "neutral") %>%
@@ -833,7 +839,7 @@ sb_situation <- study_long %>%
   geom_bar(stat = "identity", position = "fill") +
   geom_text(aes(x = r_risk_binary, y = rep(c(.3, .8), each = 2),
                 label = paste0(round(percent *100),"%")), size = 5,
-            fontface = "bold") +
+            fontface = "bold", col = "white") +
   theme_bw() +
   labs(x = "Aspects",
        y = "Response Ratio",
@@ -845,7 +851,7 @@ sb_situation <- study_long %>%
     axis.title = element_text(size = 13,face = "bold"),
     title = element_text(size = 14, face = "bold")
   ) +
-  scale_fill_manual(values = c("#a5d7d2", "#1ea5a5"))
+  scale_fill_manual(values = bar_cols[1:2])
 
 sb_control <- study_long %>%
   filter(r_risk_binary != "neutral") %>%
@@ -860,7 +866,7 @@ sb_control <- study_long %>%
   geom_bar(stat = "identity", position = "fill") +
   geom_text(aes(x = r_risk_binary, y = rep(c(.5, .18), each = 2),
                 label = paste0(round(percent *100),"%")), size = 5,
-            fontface = "bold") +
+            fontface = "bold", col = "white") +
   scale_y_continuous(expand = c(0, 0)) +
   theme_bw() +
   labs(x = "Aspects",
@@ -872,7 +878,7 @@ sb_control <- study_long %>%
     axis.title = element_text(size = 13,face = "bold"),
     title = element_text(size = 14, face = "bold")
   ) +
-  scale_fill_manual(values = c("#a5d7d2", "#1ea5a5"))
+  scale_fill_manual(values = bar_cols[1:2])
 
 sb_active <- study_long %>%
   filter(r_risk_binary != "neutral") %>%
@@ -887,7 +893,7 @@ sb_active <- study_long %>%
   geom_bar(stat = "identity", position = "fill") +
   geom_text(aes(x = r_risk_binary, y = rep(c(.5, .06), each = 2),
                 label = paste0(round(percent *100),"%")), size = 5,
-            fontface = "bold") +
+            fontface = "bold", col = "white") +
   scale_y_continuous(expand = c(0, 0)) +
   theme_bw() +
   labs(x = "Aspects",
@@ -899,7 +905,7 @@ sb_active <- study_long %>%
     axis.title = element_text(size = 13,face = "bold"),
     title = element_text(size = 14, face = "bold")
   ) +
-  scale_fill_manual(values = c("#a5d7d2", "#1ea5a5"))
+  scale_fill_manual(values = bar_cols[1:2])
 
 sb_frequency <- study_long %>%
   filter(r_risk_binary != "neutral") %>%
@@ -924,8 +930,8 @@ sb_frequency <- study_long %>%
                 y = c(.9, .9, .625, .625, .375, .375, .21, .13, .14, .055, .05,
                       0.015),
                 label = paste0(round(percent *100),"%")), size = 5,
-            fontface = "bold", col = c(rep("black", 4), rep("white", 6),
-                                       rep("black", 2))) +
+            fontface = "bold", col = c(rep("white", 6),
+                                       rep("black", 6))) +
   scale_y_continuous(expand = c(0, 0)) +
   theme_bw() +
   labs(x = "Aspects",
@@ -937,8 +943,7 @@ sb_frequency <- study_long %>%
     axis.title = element_text(size = 13,face = "bold"),
     title = element_text(size = 14, face = "bold")
   ) +
-  scale_fill_manual(values = c("#a5d7d2", "#1ea5a5", "#2d373c", "#8c9196",
-                               "#d20537", "#eb829b"))
+  scale_fill_manual(values = bar_cols)
 
 pdf("plots/study_1/contents_stacked_barplots.pdf",
     width = 12, height = 8)
@@ -1007,6 +1012,8 @@ psycho::analyze(soc_mod)
 # estimated probabilities for contra- and pro-aspects
 exp(c(fixef(soc_mod)[1], sum(fixef(soc_mod)))) /
   (1 + exp( c(fixef(soc_mod)[1], sum(fixef(soc_mod)))))
+# prior info
+prior_summary(soc_mod)
 
 # personal experience
 fixef(sit_mod)
@@ -1043,3 +1050,5 @@ tapply(study_long$sentiment, study_long$r_risk_binary, mean, na.rm = TRUE)
 # frequency
 summary(freq_mod)
 fixef(freq_mod)
+# prior info
+prior_summary(freq_mod)

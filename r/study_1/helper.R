@@ -227,3 +227,67 @@ rob_s1 <- function(data_long_s1, data_s1, data_long_s2, data_s2, fitruns = 10,
   )
   
 }
+
+# get predicionts
+pred_acc <- function(data_long, data, phi, QT_Intercept, QT_ns, QT_na, QT_SMRD,
+                   r2 = "cor") {
+  
+  
+  
+  # get predictions for heuristic models without free parameters
+  pred_df <- data_long %>%
+    group_by(partid) %>%
+    summarise(
+      pred_EXTREME = if_else(length(r_risk[which.max(abs(r_risk))]) >= 1 &&
+                               abs(sum(sign(r_risk[which.max(abs(r_risk))]))) !=
+                               length(r_risk[which.max(abs(r_risk))]), 0,
+                             r_risk[which.max(abs(r_risk))][1]),
+      pred_FIRST = r_risk[1],
+      pred_LAST = tail(r_risk, 1),
+      pred_SUM = sum(r_risk)
+    ) %>%
+    ungroup() %>%
+    arrange(partid)
+  
+  # get and store predictions for QT
+  pred_df$pred_QT <- QT_Intercept + QT_ns * data$n_seeking[order(data$partid)] +
+    QT_na * data$n_avoiding[order(data$partid)] + QT_SMRD * data$SMRD[order(data$partid)]
+  
+  # get and save predictions for VUM
+  pred_df$pred_VUM <- data_long %>%
+    group_by(partid) %>%
+    summarize(pred_VUM = vum(r_risk, phi)) %>%
+    ungroup() %>%
+    arrange(partid) %>%
+    select(pred_VUM) %>%
+    pull()
+  
+  pred_df$criterion <- data$rating[order(data$partid)]
+  
+  # compute Rsquared
+  rsqs <- apply(pred_df[, c("pred_QT", "pred_EXTREME", "pred_FIRST",
+                            "pred_LAST", "pred_SUM", "pred_VUM")],
+                2, function(x, crit, r2){
+                  if (r2 == "var") {
+                    1 - sum((crit - x) ** 2) / sum((crit - mean(crit)) ** 2)
+                  } else if (r2 == "cor") {
+                    cor(x, crit) ** 2
+                  }
+                }, crit = pred_df$criterion, r2 = r2)
+  
+  
+  # check correlations of predictions
+  predictions <- pred_df
+  
+  # get adjusted mean Rsquared
+  n_par <- c(3, rep(0, 4), 1)
+  adj_rsqs <- 1 - (1 - rsqs) * (nrow(data) - 1) / (nrow(data) - n_par - 1)
+  
+  out <- list(
+    predictions = predictions,
+    adj_rsqs = adj_rsqs,
+    rsqs = rsqs
+  )
+  
+}
+

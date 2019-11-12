@@ -556,7 +556,7 @@ axis(1, c(-1, 1, 2, 20), labels = c("", "All", "> 1 Aspect", ""), lwd = 2,
      cex.axis = 1.5)
 axis(2, c(-1, .5, .75, 1, 1.25, 1.5), labels = TRUE, lwd = 2, las = 1,
      cex.axis = 1.5)
-mtext("Models", side = 1, line = 4, cex = 1.4, font = 2, padj = -.4)
+mtext("Sample", side = 1, line = 4, cex = 1.4, font = 2, padj = -.4)
 mtext(expression(phi), side = 2, line = 4, cex = 1.4, font = 2, padj = .2)
 
 arrows(2.6, .95, 2.6,.6, lwd = 4)

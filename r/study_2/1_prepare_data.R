@@ -179,17 +179,25 @@ VUM_s2 <- study_long_s2 %>%
   ungroup()
 
 sim_dat <- sim_dat %>%
-  left_join(study_s1 %>% select(partid, n_aspects), by = "partid") %>%
-  mutate(overlap = case_when(m_similarity >= 4 ~ 1,
+  left_join(study_s1 %>% select(partid, n_aspects) %>%
+              rename(n_aspects_s1 = n_aspects), by = "partid") %>%
+  left_join(study_s2 %>% select(partid, n_aspects) %>%
+              rename(n_aspects_s2 = n_aspects), by = "partid") %>%
+  mutate(overlap = case_when(m_similarity >= 5 ~ 1,
                              TRUE ~ 0),
          aspects = case_when(substr(aspect_id_1, 1, 2) == "s1" &
                                substr(aspect_id_2, 1, 2) == "s1" ~ "within_s1",
                              substr(aspect_id_1, 1, 2) == "s2" &
                                substr(aspect_id_2, 1, 2) == "s2" ~ "within_s2",
                              TRUE ~ "between")) %>%
-  select(partid, aspects, overlap, m_similarity, n_aspects) %>%
+  select(partid, aspects, overlap, m_similarity, n_aspects_s1, n_aspects_s2) %>%
   group_by(partid, aspects) %>%
-  summarise(p_overlap = mean(overlap),
+  summarise(p_overlap = case_when(first(aspects) == "between" ~ sum(overlap) /
+                                    min(c(first(n_aspects_s1), first(n_aspects_s2))),
+                                  first(aspects) == "within_s1" ~ sum(overlap) /
+                                    first(n_aspects_s1),
+                                  first(aspects) == "within_s2" ~ sum(overlap) /
+                                    first(n_aspects_s2)),
             m_similarity = mean(m_similarity)) %>%
   gather(variable, value, p_overlap, m_similarity) %>%
   unite(temp, variable, aspects) %>%

@@ -111,9 +111,9 @@ sim_dat$m_similarity_up <- mean_up
 
 # aggregate to participant level
 agg_sim <- sim_dat %>%
-    mutate(overlap_up = case_when(m_similarity_up >= 4 ~ 1,
+    mutate(overlap_up = case_when(m_similarity_up >= 5 ~ 1,
                                TRUE ~ 0),
-           overlap_mdn = case_when(mdn_similarity >= 4 ~ 1,
+           overlap_mdn = case_when(mdn_similarity >= 5 ~ 1,
                                    TRUE ~ 0),
            aspects = case_when(substr(aspect_id_1, 1, 2) == "s1" &
                                  substr(aspect_id_2, 1, 2) == "s1" ~ "within_s1",
@@ -343,9 +343,7 @@ posterior <- as.data.frame(mod_4a)
 mean(posterior$p_overlap_between)
 quantile(posterior$p_overlap_between, c(.025, .975))
 
-# use gamma distribution with log link; the + .0001 is necessary as due to
-# floating point imprecision  0 is sometimes interpreted as negative number
-# which is not possible in gamma regression
+# use gamma distribution with log link; the + .0001 to ensure positive values
 mod_4a2 <- stan_glm(I(delta_rating + .0001) ~ p_overlap_between, data = study_joint,
                    chains = 4, iter = 15000, family = Gamma(link = "log"),
                    prior_intercept = normal(location = 0, scale = 10),
@@ -364,6 +362,9 @@ mcmc_areas(
 posterior <- as.data.frame(mod_4a2)
 mean(posterior$p_overlap_between)
 quantile(posterior$p_overlap_between, c(.025, .975))
+
+cor(study_joint$delta_rating, study_joint$p_overlap_between,
+    method = "spearman")
 
 ### Check how model looks if median coefficient of concordance is used (directly
 ### with gamma distribution and log-link)
@@ -408,6 +409,51 @@ posterior <- as.data.frame(mod_4a4)
 mean(posterior$p_overlap_up_between)
 quantile(posterior$p_overlap_up_between, c(.025, .975))
 
+### Check how the relation looks when we use the average similarity as predictor
+# stan_lm with absolute difference in SOEP from s1 and s2 as DV, and mean
+# similarity as predictor.
+
+mod_4a5 <- stan_glm(delta_rating ~ m_similarity_between, data = study_joint,
+                   chains = 4, iter = 15000, family = gaussian(),
+                   prior_intercept = normal(location = 0, scale = 10),
+                   prior = normal(location = 0, scale = 2.5))
+
+summary(mod_4a5)
+
+mcmc_areas(
+  as.array(mod_4a5),
+  pars = "m_similarity_between",
+  prob = 0.95, # 95% intervals
+  prob_outer = 0.99, # 99%
+  point_est = "mean"
+)
+
+posterior <- as.data.frame(mod_4a5)
+mean(posterior$m_similarity_between)
+quantile(posterior$m_similarity_between, c(.025, .975))
+
+# use gamma distribution with log link; the + .0001 to ensure positive values
+mod_4a6 <- stan_glm(I(delta_rating + .0001) ~ m_similarity_between, data = study_joint,
+                    chains = 4, iter = 15000, family = Gamma(link = "log"),
+                    prior_intercept = normal(location = 0, scale = 10),
+                    prior = normal(location = 0, scale = 2.5))
+
+summary(mod_4a6)
+
+mcmc_areas(
+  as.array(mod_4a6),
+  pars = "m_similarity_between",
+  prob = 0.95, # 95% intervals
+  prob_outer = 0.99, # 99%
+  point_est = "mean"
+)
+
+posterior <- as.data.frame(mod_4a6)
+mean(posterior$m_similarity_between)
+quantile(posterior$m_similarity_between, c(.025, .975))
+
+# correlation between the risk preference and average similatiry
+cor(study_joint$delta_rating, study_joint$m_similarity_between, method = "spearman")
 
 # RQ 4b: The relation between evidence stability and the stability of RTP ======
 
@@ -479,10 +525,11 @@ pc_soep <- study_joint %>%
   ggplot(aes(Timepoint, SRRTP, group = partid)) +
   geom_point(alpha = .6) +
   geom_line(col = "#646464", alpha = .3) +
-  labs(y = "Risk Preference") +
+  labs(y = "Risk Preference",
+       x = "") +
   theme_classic() +
   theme(
-    axis.text.x = element_text(size = 10),
+    axis.text.x = element_text(size = 12, colour = "black"),
     axis.text.y = element_text(size = 10),
     axis.title = element_text(size = 14,face = "bold")
   )
@@ -496,9 +543,11 @@ pc_soe <- study_joint %>%
   ggplot(aes(Timepoint, SoE, group = partid)) +
   geom_point() +
   geom_line(col = "#646464", alpha = .3) +
+  labs(y = "Aggr. Strength of Evidence",
+       x = "") +
   theme_classic() +
   theme(
-    axis.text.x = element_text(size = 10),
+    axis.text.x = element_text(size = 12, colour = "black"),
     axis.text.y = element_text(size = 10),
     axis.title = element_text(size = 14,face = "bold")
   )
@@ -511,7 +560,7 @@ ps <- study_joint %>%
   ggplot(aes(delta_m_risk, delta_rating)) +
   geom_point(alpha = .6) +
   geom_smooth(method = "lm", se = FALSE, col = "#d20537") +
-  labs(x = expression(bold(Delta) ~ bold(SoE)),
+  labs(x = expression(bold(Delta) ~ bold(Aggr.) ~ bold(Strength) ~ bold(of) ~ bold(Evidence)),
        y = expression(bold(Delta) ~ bold(Risk) ~ bold(Preference))) +
   theme_classic() +
   theme(
@@ -533,12 +582,13 @@ pc_soep <- study_joint %>%
                                TRUE ~ "Study 2"),
          SRRTP = SRRTP + rnorm(2 * nrow(study_joint), 0, 0.1)) %>%
   ggplot(aes(Timepoint, SRRTP, group = partid)) +
-  labs(y = "Risk Preference") +
   geom_point(alpha = .6) +
   geom_line(col = "#646464", alpha = .3) +
+  labs(y = "Risk Preference",
+       x = "") +
   theme_classic() +
   theme(
-    axis.text.x = element_text(size = 10),
+    axis.text.x = element_text(size = 12, colour = "black"),
     axis.text.y = element_text(size = 10),
     axis.title = element_text(size = 14,face = "bold")
   )
@@ -551,9 +601,11 @@ pc_soe <- study_joint %>%
   ggplot(aes(Timepoint, SoE, group = partid)) +
   geom_point() +
   geom_line(col = "#646464", alpha = .3) +
+  labs(y = "Aggr. Strength of Evidence",
+       x = "") +
   theme_classic() +
   theme(
-    axis.text.x = element_text(size = 10),
+    axis.text.x = element_text(size = 12, colour = "black"),
     axis.text.y = element_text(size = 10),
     axis.title = element_text(size = 14,face = "bold")
   )
@@ -564,7 +616,7 @@ ps <- study_joint %>%
   ggplot(aes(delta_VUM, delta_rating)) +
   geom_point(alpha = .6) +
   geom_smooth(method = "lm", se = FALSE, col = "#d20537") +
-  labs(x = expression(bold(Delta) ~ bold(SoE)),
+  labs(x = expression(bold(Delta) ~ bold(Aggr.) ~ bold(Strength) ~ bold(of) ~ bold(Evidence)),
        y = expression(bold(Delta) ~ bold(Risk) ~ bold(Preference))) +
   theme_classic() +
   theme(

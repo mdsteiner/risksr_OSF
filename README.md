@@ -1,7 +1,7 @@
 # risksr_OSF
 This repository contains data and analysis scripts for the project on *Mapping the Cognitive Processes Underlying Self-Reported Risk-Taking Propensity*
 
-It contains the risksr_OSF R project and a collection of subfolders containing code ("cpp" with the C++ implementation of the value updating model and its fitting procedure; "r" with the data preparation and analysis scripts), data (containing anonymized data from the pilot study), and plots (generated with the r analysis scripts).
+It contains the risksr_OSF R project and a collection of subfolders containing code ("cpp" with the C++ implementation of the value updating model and its fitting procedure; "r" with the data preparation and analysis scripts), data (containing anonymized data from the pilot study), and plots (generated with the r analysis scripts).  Moreover, it contains the supplemental materials files *supplement.pdf*, where we provide more details on the conducted analyses, and *ScreenshotsProcedure.pdf*, where we provide details on the exact implementation of the study.
 
 The R code files are numbered in the order in which they were executed (the data preparation scripts do not have to be run as the prepared data are already in the data folder).
 
