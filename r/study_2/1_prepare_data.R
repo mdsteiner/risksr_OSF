@@ -22,7 +22,9 @@ aspects <- aspects %>%
   as_tibble() %>% type_convert() %>%
   mutate(r_risk = as.numeric(r_risk))
 
-participants <- read_csv("data/study_2/participants_anonymous.csv")
+study_s1 <- read_csv("data/study_1/study.csv")
+participants <- read_csv("data/study_2/participants_anonymous.csv") %>% 
+  filter(partid %in% study_s1$partid)
 ratings <- read_csv("data/study_2/ratings.csv", na = "NULL")
 
 ### clean an merge data
@@ -57,13 +59,19 @@ pl <- participants %>%
          r_risk_binary = case_when(r_risk >= -50 & r_risk < 0 ~ "avoiding",
                                    r_risk == 0 ~ "neutral",
                                    TRUE ~ "seeking"),
-         n_aspects = max(aspect_ind),
-         n_seeking = sum(r_risk_binary == "seeking"),
-         n_avoiding = sum(r_risk_binary == "avoiding"),
-         m_risk = mean(r_risk),
+         r_risk_binary_n = case_when(r_risk >= -50 & r_risk < 0 ~ -1,
+                                     r_risk == 0 ~ 0,
+                                     TRUE ~ 1),
+         n_aspects = max(aspect_ind, na.rm = TRUE),
+         n_seeking = sum(r_risk_binary == "seeking", na.rm = TRUE),
+         n_avoiding = sum(r_risk_binary == "avoiding", na.rm = TRUE),
+         s_aspects = sum(r_risk_binary_n, na.rm = TRUE),
+         m_aspects = mean(r_risk_binary_n, na.rm = TRUE),
+         m_risk = mean(r_risk, na.rm = TRUE),
+         s_risk = sum(r_risk, na.rm = TRUE),
          p_social = mean(r_social, na.rm = TRUE),
          p_situation = mean(r_situation, na.rm = TRUE),
-         p_control = mean(r_control == "controllable"),
+         p_control = mean(r_control == "controllable", na.rm = TRUE),
          p_active = mean(r_active == "active", na.rm = TRUE),
          rank_frequency = case_when(r_frequency == "day" ~ 1,
                                     r_frequency == "week" ~ 2,
@@ -105,7 +113,7 @@ pl <- pl %>%
 
 # create a data frame with only one row per participant for the statistical analyses
 pd <- pl %>%
-  select(partid, age, sex, rating, n_seeking, n_avoiding, m_risk, p_control,
+  select(partid, age, sex, rating, n_seeking, n_avoiding, s_aspects, m_aspects, m_risk, s_risk, p_control,
          p_social, p_situation, med_frequency, p_active, mean_sentiment,
          min_sentiment, max_sentiment, SMRD, aspect_ind, yearsofedu, job,
          income, n_aspects, remembered, similarity, duration) %>%
@@ -204,15 +212,15 @@ sim_dat <- sim_dat %>%
   spread(temp, value)
 
 study_s1 <- study_s1 %>%
-  select(partid, rating, n_seeking, n_avoiding, m_risk, p_control, p_social,
-         p_situation, med_frequency, p_active, mean_sentiment, n_aspects)
-names(study_s1)[2:12] <- paste0(names(study_s1)[2:12], "_s1")
+  select(partid, rating, n_seeking, n_avoiding, m_risk, s_risk, p_control, p_social,
+         p_situation, med_frequency, p_active, mean_sentiment, n_aspects, m_aspects, s_aspects)
+names(study_s1)[2:15] <- paste0(names(study_s1)[2:15], "_s1")
 
 study_s2 <- study_s2 %>%
-  select(partid, rating, n_seeking, n_avoiding, m_risk, p_control, p_social,
-         p_situation, med_frequency, p_active, mean_sentiment, n_aspects,
+  select(partid, rating, n_seeking, n_avoiding, m_risk, s_risk, p_control, p_social,
+         p_situation, med_frequency, p_active, mean_sentiment, n_aspects, m_aspects, s_aspects,
          remembered, similarity)
-names(study_s2)[2:12] <- paste0(names(study_s2)[2:12], "_s2")
+names(study_s2)[2:15] <- paste0(names(study_s2)[2:15], "_s2")
 
 study_joint <- study_s2 %>%
   left_join(study_s1, by = "partid") %>%

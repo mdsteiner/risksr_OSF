@@ -42,13 +42,19 @@ pl <- participants %>%
          r_risk_binary = case_when(r_risk >= -50 & r_risk < 0 ~ "avoiding",
                                    r_risk == 0 ~ "neutral",
                                    TRUE ~ "seeking"),
-         n_aspects = max(aspect_ind),
+         r_risk_binary_n = case_when(r_risk >= -50 & r_risk < 0 ~ -1,
+                                    r_risk == 0 ~ 0,
+                                    TRUE ~ 1),
+         n_aspects = max(aspect_ind, na.rm = TRUE),
          n_seeking = sum(r_risk_binary == "seeking"),
          n_avoiding = sum(r_risk_binary == "avoiding"),
-         m_risk = mean(r_risk),
+         s_aspects = sum(r_risk_binary_n, na.rm = TRUE),
+         m_aspects = mean(r_risk_binary_n, na.rm = TRUE),
+         m_risk = mean(r_risk, na.rm = TRUE),
+         s_risk = sum(r_risk, na.rm = TRUE),
          p_social = mean(r_social, na.rm = TRUE),
          p_situation = mean(r_situation, na.rm = TRUE),
-         p_control = mean(r_control == "controllable"),
+         p_control = mean(r_control == "controllable", na.rm = TRUE),
          p_active = mean(r_active == "active", na.rm = TRUE),
          rank_frequency = case_when(r_frequency == "day" ~ 1,
                                     r_frequency == "week" ~ 2,
@@ -115,7 +121,8 @@ mean(is.na(pl$sentiment))
 
 # create a data frame with only one row per participant for the statistical analyses
 pd <- pl %>%
-  select(partid, age, sex, rating, n_seeking, n_avoiding, m_risk, p_control,
+  select(partid, age, sex, rating, n_seeking, n_avoiding, s_aspects, m_aspects,
+         m_risk, s_risk, p_control,
          p_social, p_situation, med_frequency, p_active, mean_sentiment,
          min_sentiment, max_sentiment, SMRD, aspect_ind, yearsofedu, job,
          income, n_aspects, duration) %>%

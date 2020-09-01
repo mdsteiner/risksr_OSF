@@ -1,0 +1,35 @@
+---
+title: "Domains and Properties"
+date: "7/30/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+domains <- read_csv("../../data/contents/domains.csv")
+properties <- read_csv("../../data/contents/properties.csv")
+```
+
+## Domains
+
+```{r echo = FALSE}
+
+domains %>% 
+  select(domain, description) %>% 
+  rename(Domain = domain, Description = description) %>% 
+  knitr::kable()
+```
+
+\newpage
+## Properties
+
+```{r echo = FALSE}
+properties %>% 
+  select(category, property, description) %>% 
+  mutate(category = case_when(category == "Cultural/personality" ~ "Cultural/ personality",
+                              TRUE ~ category)) %>%
+  rename(Category = category, Property = property, Description = description) %>% 
+  arrange(Category) %>% 
+  knitr::kable()
+```

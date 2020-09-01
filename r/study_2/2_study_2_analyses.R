@@ -57,7 +57,7 @@ p2 <- study_joint %>%
   )
 
 pdf("plots/study_2/SOEP_distribution_comparison.pdf",
-       width = 12, height = 6)
+    width = 12, height = 6)
 p1 + p2
 dev.off() 
 
@@ -77,12 +77,12 @@ for (i in 1:21) {
   ind_low <- ceiling(n_aspects / 21 * (i - 1)) + 1
   ind_upp <- ceiling(n_aspects / 21 * i)
   
-   temp_dat <- sim_dat %>%
+  temp_dat <- sim_dat %>%
     select(starts_with("rating_")) %>%
     slice(ind_low:ind_upp)
-   
+  
   temp_dat <- temp_dat[,-which(is.na(temp_dat[1,]))]
-   
+  
   # For the triplets of raters
   cod_list[[i]] <- KendallW(temp_dat, correct = TRUE, test = TRUE)
   cod[i] <- cod_list[[i]]$estimate
@@ -102,7 +102,7 @@ for (i in 1:21) {
   # Save mean ratings only of the two raters with the highest agreement 
   max_cod <- which.max(cod_mat[i,])[1]
   mean_up <- c(mean_up, rowMeans(temp_dat[, rat_comb[max_cod,]], na.rm = TRUE))
-
+  
 }
 
 # add median and mean ratings of the raters with the highest agreement to dataframe
@@ -111,26 +111,26 @@ sim_dat$m_similarity_up <- mean_up
 
 # aggregate to participant level
 agg_sim <- sim_dat %>%
-    mutate(overlap_up = case_when(m_similarity_up >= 5 ~ 1,
-                               TRUE ~ 0),
-           overlap_mdn = case_when(mdn_similarity >= 5 ~ 1,
-                                   TRUE ~ 0),
-           aspects = case_when(substr(aspect_id_1, 1, 2) == "s1" &
-                                 substr(aspect_id_2, 1, 2) == "s1" ~ "within_s1",
-                               substr(aspect_id_1, 1, 2) == "s2" &
-                                 substr(aspect_id_2, 1, 2) == "s2" ~ "within_s2",
-                               TRUE ~ "between")) %>%
-    select(partid, aspects, overlap_up, overlap_mdn, m_similarity_up,
-           mdn_similarity) %>%
-    group_by(partid, aspects) %>%
-    summarise(p_overlap_up = mean(overlap_up, na.rm = TRUE),
-              p_overlap_mdn = mean(overlap_mdn, na.rm = TRUE),
-              m_mdn_similarity = mean(mdn_similarity, na.rm = TRUE),
-              m_m_up_similarity = mean(m_similarity_up, na.rm = TRUE)) %>%
-    gather(variable, value, p_overlap_up, p_overlap_mdn, m_mdn_similarity,
-           m_m_up_similarity) %>%
-    unite(temp, variable, aspects) %>%
-    spread(temp, value)
+  mutate(overlap_up = case_when(m_similarity_up >= 5 ~ 1,
+                                TRUE ~ 0),
+         overlap_mdn = case_when(mdn_similarity >= 5 ~ 1,
+                                 TRUE ~ 0),
+         aspects = case_when(substr(aspect_id_1, 1, 2) == "s1" &
+                               substr(aspect_id_2, 1, 2) == "s1" ~ "within_s1",
+                             substr(aspect_id_1, 1, 2) == "s2" &
+                               substr(aspect_id_2, 1, 2) == "s2" ~ "within_s2",
+                             TRUE ~ "between")) %>%
+  select(partid, aspects, overlap_up, overlap_mdn, m_similarity_up,
+         mdn_similarity) %>%
+  group_by(partid, aspects) %>%
+  summarise(p_overlap_up = mean(overlap_up, na.rm = TRUE),
+            p_overlap_mdn = mean(overlap_mdn, na.rm = TRUE),
+            m_mdn_similarity = mean(mdn_similarity, na.rm = TRUE),
+            m_m_up_similarity = mean(m_similarity_up, na.rm = TRUE)) %>%
+  gather(variable, value, p_overlap_up, p_overlap_mdn, m_mdn_similarity,
+         m_m_up_similarity) %>%
+  unite(temp, variable, aspects) %>%
+  spread(temp, value)
 
 # Add to study_joint data
 study_joint <- study_joint %>%
@@ -293,6 +293,31 @@ p_over_betw + p_over_ws1 + p_over_ws2 + p_sim_bet + p_sim_withs1 + p_sim_withs2 
   plot_layout(ncol = 2, byrow = FALSE)
 dev.off()
 
+
+
+pdf("plots/study_2/m_similarity_dist.pdf", height = 4,
+    width = 12)
+sim_dat %>%
+  mutate(aspects = case_when(substr(aspect_id_1, 1, 2) == "s1" &
+                               substr(aspect_id_2, 1, 2) == "s1" ~ "Within S1",
+                             substr(aspect_id_1, 1, 2) == "s2" &
+                               substr(aspect_id_2, 1, 2) == "s2" ~ "Within S2",
+                             TRUE ~ "Cross-Study")) %>%
+  ggplot(aes(m_similarity)) +
+  geom_histogram(col = "#a5d7d2", fill = "#a5d7d2") +
+  labs(x = "M Similarity",
+       y = "Frequency") +
+  facet_wrap(~ aspects) +
+  theme_bw()+
+  xlim(-.01, 5.01) +
+  theme(
+    strip.text = element_text(size = 12, face = "bold"),
+    axis.text = element_text(size = 14),
+    axis.title = element_text(size = 16,face = "bold"),
+    strip.background = element_rect(fill="lightgrey")
+  )
+dev.off()
+
 # correlation between participants' own similarity ratings and the average 
 # similarity ratings
 
@@ -345,9 +370,9 @@ quantile(posterior$p_overlap_between, c(.025, .975))
 
 # use gamma distribution with log link; the + .0001 to ensure positive values
 mod_4a2 <- stan_glm(I(delta_rating + .0001) ~ p_overlap_between, data = study_joint,
-                   chains = 4, iter = 15000, family = Gamma(link = "log"),
-                   prior_intercept = normal(location = 0, scale = 10),
-                   prior = normal(location = 0, scale = 2.5))
+                    chains = 4, iter = 15000, family = Gamma(link = "log"),
+                    prior_intercept = normal(location = 0, scale = 10),
+                    prior = normal(location = 0, scale = 2.5))
 
 summary(mod_4a2)
 
@@ -414,9 +439,9 @@ quantile(posterior$p_overlap_up_between, c(.025, .975))
 # similarity as predictor.
 
 mod_4a5 <- stan_glm(delta_rating ~ m_similarity_between, data = study_joint,
-                   chains = 4, iter = 15000, family = gaussian(),
-                   prior_intercept = normal(location = 0, scale = 10),
-                   prior = normal(location = 0, scale = 2.5))
+                    chains = 4, iter = 15000, family = gaussian(),
+                    prior_intercept = normal(location = 0, scale = 10),
+                    prior = normal(location = 0, scale = 2.5))
 
 summary(mod_4a5)
 
@@ -484,12 +509,12 @@ plot(study_joint$delta_VUM, study_joint$delta_rating)
 
 # Rerun analysis with directional differences (i.e., without taking the absolute)
 mod_4b2 <- stan_glm(delta_rating ~ delta_pred_VUM,
-                   data = study_joint %>% 
-                     mutate(delta_pred_VUM = scale(pred_VUM_s2 - pred_VUM_s1),
-                            delta_rating = scale(rating_s2 - rating_s1)),
-                   chains = 4, iter = 15000, family = gaussian(),
-                   prior_intercept = normal(location = 0, scale = 10),
-                   prior = normal(location = 0, scale = 2.5))
+                    data = study_joint %>% 
+                      mutate(delta_pred_VUM = scale(pred_VUM_s2 - pred_VUM_s1),
+                             delta_rating = scale(rating_s2 - rating_s1)),
+                    chains = 4, iter = 15000, family = gaussian(),
+                    prior_intercept = normal(location = 0, scale = 10),
+                    prior = normal(location = 0, scale = 2.5))
 
 summary(mod_4b2)
 
@@ -503,7 +528,7 @@ mcmc_areas(
 )
 
 posterior <- as.data.frame(mod_4b2)
-mean(posterior$delta_pred_VUM)
+median(posterior$delta_pred_VUM)
 quantile(posterior$delta_pred_VUM, c(.025, .975))
 
 study_joint %>% 
@@ -588,9 +613,24 @@ pc_soep <- study_joint %>%
        x = "") +
   theme_classic() +
   theme(
-    axis.text.x = element_text(size = 12, colour = "black"),
-    axis.text.y = element_text(size = 10),
-    axis.title = element_text(size = 14,face = "bold")
+    axis.text.x = element_text(size = 13, colour = "black"),
+    axis.text.y = element_text(size = 12),
+    axis.title = element_text(size = 15,face = "bold")
+  )
+
+hist_soep <- study_joint %>%
+  select(rating_s1, rating_s2, partid) %>%
+  mutate(delta_rating = rating_s2 - rating_s1) %>%
+  ggplot(aes(delta_rating)) +
+  geom_histogram(col = "#646464", alpha = .6, bins = 60) +
+  labs(x = expression(bold(Delta) ~ bold(Risk) ~ bold(Preference)),
+       y = "Frequency") +
+  coord_cartesian(xlim = c(-10, 10)) +
+  theme_classic() +
+  theme(
+    axis.text.x = element_text(size = 13, colour = "black"),
+    axis.text.y = element_text(size = 13),
+    axis.title = element_text(size = 15,face = "bold")
   )
 
 pc_soe <- study_joint %>%
@@ -605,9 +645,24 @@ pc_soe <- study_joint %>%
        x = "") +
   theme_classic() +
   theme(
-    axis.text.x = element_text(size = 12, colour = "black"),
-    axis.text.y = element_text(size = 10),
-    axis.title = element_text(size = 14,face = "bold")
+    axis.text.x = element_text(size = 13, colour = "black"),
+    axis.text.y = element_text(size = 12),
+    axis.title = element_text(size = 15,face = "bold")
+  )
+
+hist_soe <- study_joint %>%
+  select(pred_VUM_s1, pred_VUM_s2, partid) %>%
+  mutate(delta_VUM = pred_VUM_s2 - pred_VUM_s1) %>%
+  ggplot(aes(delta_VUM)) +
+  geom_histogram(col = "#646464", alpha = .6, bins = 60) +
+  labs(x = expression(bold(Delta) ~ bold(Aggr.) ~ bold(Strength) ~ bold(of) ~ bold(Evidence)),
+       y = "Frequency") +
+  coord_cartesian(xlim = c(-100, 100)) +
+  theme_classic() +
+  theme(
+    axis.text.x = element_text(size = 13, colour = "black"),
+    axis.text.y = element_text(size = 13),
+    axis.title = element_text(size = 15,face = "bold")
   )
 
 ps <- study_joint %>%
@@ -616,16 +671,20 @@ ps <- study_joint %>%
   ggplot(aes(delta_VUM, delta_rating)) +
   geom_point(alpha = .6) +
   geom_smooth(method = "lm", se = FALSE, col = "#d20537") +
+  coord_cartesian(xlim = c(-100, 100), ylim = c(-10, 10)) +
   labs(x = expression(bold(Delta) ~ bold(Aggr.) ~ bold(Strength) ~ bold(of) ~ bold(Evidence)),
        y = expression(bold(Delta) ~ bold(Risk) ~ bold(Preference))) +
   theme_classic() +
   theme(
-    axis.text.x = element_text(size = 10),
-    axis.text.y = element_text(size = 10),
-    axis.title = element_text(size = 14,face = "bold")
+    axis.text.x = element_text(size = 13),
+    axis.text.y = element_text(size = 13),
+    axis.title = element_text(size = 15,face = "bold")
   )
 
 pdf("plots/study_2/RQ4b_stability_VUM.pdf", height = 4, width = 12)
 pc_soep + pc_soe + ps
 dev.off()
- 
+
+pdf("plots/study_2/RQ4b_stability_VUM_hists.pdf", height = 4, width = 12)
+hist_soep + hist_soe + ps
+dev.off()

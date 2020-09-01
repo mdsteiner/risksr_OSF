@@ -104,11 +104,11 @@ tibble(
                     study$n_seeking),"\n",
              ifelse(study$n_avoiding < 10, paste0("0", study$n_avoiding),
                     study$n_avoiding))
-  ) %>%
+) %>%
   ggplot(aes(x)) +
   geom_bar(fill = c(rep("#a5d7d2", 8), rep("#1ea5a5", 6), rep("#2d373c", 6),
-                   rep("#8c9196", 4), rep("#d20537", 3), rep("#eb829b", 3),
-                   "#006e6e", "#bec3c8", "#006e6e", "#000000")) +
+                    rep("#8c9196", 4), rep("#d20537", 3), rep("#eb829b", 3),
+                    "#006e6e", "#bec3c8", "#006e6e", "#000000")) +
   scale_y_continuous(limits = c(0, 40), expand = c(0, 0)) +
   theme_bw()+
   labs(x = "N Pro (Top) and N Contra (Bottom)",
@@ -135,7 +135,7 @@ cor.test(study$m_risk, study$age, method = "spearman")
 
 # Plot distribution of participants' average strength of evidence
 ggplot(study, aes(x = m_risk)) +
-  geom_histogram(col = "#a5d7d2", fill = "#a5d7d2") +
+  geom_histogram(col = "darkblue", fill = "darkblue") +
   theme_bw() +
   labs(x = "Strength of Evidence",
        y = "Frequency") +
@@ -544,6 +544,58 @@ text(2.85, .755, "Recency Effect", font = 3, cex = 1.8, srt = 90)
 
 dev.off()
 
+### Robustness check of phi values ---------------------------------------------
+# Vary phi values to test how important phi is.
+
+rob_phi <- function(data_long, data, phis = seq(.5,1.5, by = .1), r2 = "cor") {
+  
+  VUM <- matrix(NA, nrow = nrow(data), ncol = length(phis))
+  # loop through test sets
+  for (ind in 1:length(phis)) {
+    # get and save predictions for VUM
+    VUM[, ind] <- data_long %>%
+      group_by(partid) %>%
+      summarize(pred_VUM = vum(r_risk, phis[ind])) %>%
+      ungroup() %>%
+      arrange(partid) %>%
+      select(pred_VUM) %>%
+      pull()
+  }
+  
+  VUM <- as_tibble(VUM)
+  names(VUM) <- paste0("phi_", phis)
+  VUM$criterion <- data$rating[order(data$partid)]
+  
+  # compute Rsquared
+  rsq_df<- apply(VUM[, paste0("phi_", phis)],
+                 2, function(x, crit, r2){
+                   if (r2 == "var") {
+                     1 - sum((crit - x) ** 2) / sum((crit - mean(crit)) ** 2)
+                   } else if (r2 == "cor") {
+                     cor(x, crit) ** 2
+                   }
+                 }, crit = VUM$criterion, r2 = r2)
+  
+  
+  out <- list(
+    VUM = VUM,
+    rsq_df = rsq_df
+  )
+  
+}
+
+
+phi_rob <- rob_phi(study_long, study, phis = seq(.01, 2.5, by = .001))
+
+pdf("plots/study_1/rsq_VUM_robustness.pdf", height = 5, width = 9)
+par(mar = c(4, 4.3, .8, 0.5))
+plot(seq(.01, 2.5, by = .001), phi_rob$rsq_df, type = "l", ylim = c(0, 1),
+     ylab = expression(R^2), xlab = expression(phi), las = 1, cex = 1.25,
+     bty = "l", lwd = 2, xlim = c(0, 2.5))
+abline(v = seq(.01, 2.5, by = .001)[which.max(phi_rob$rsq_df)], lty = 2,
+       col = gray(.25, .5), lwd = 2)
+dev.off()
+
 ### RQ2: Exploring the contents of evidence ====================================
 
 # Plot the distributions of responses
@@ -659,12 +711,12 @@ pc_dat <- study_long %>%
          sentiment, partid, r_risk_binary) %>%
   group_by(partid, r_risk_binary) %>%
   summarise(
-         p_social = mean(r_social, na.rm = TRUE) * 100,
-         p_situation = mean(r_situation, na.rm = TRUE) * 100,
-         p_control = mean(r_control == "controllable") * 100,
-         p_active = mean(r_active == "active", na.rm = TRUE) * 100,
-         med_frequency = median(rank_frequency, na.rm = TRUE),
-         mean_sentiment = mean(sentiment, na.rm = TRUE)) %>%
+    p_social = mean(r_social, na.rm = TRUE) * 100,
+    p_situation = mean(r_situation, na.rm = TRUE) * 100,
+    p_control = mean(r_control == "controllable") * 100,
+    p_active = mean(r_active == "active", na.rm = TRUE) * 100,
+    med_frequency = median(rank_frequency, na.rm = TRUE),
+    mean_sentiment = mean(sentiment, na.rm = TRUE)) %>%
   ungroup() %>%
   filter(r_risk_binary != "neutral")
 
@@ -816,7 +868,7 @@ sb_social <- study_long %>%
   scale_y_continuous(expand = c(0, 0)) +
   theme_bw() +
   labs(x = "Aspects",
-       y = "Response Ratio",
+       y = "Proportion",
        title = "Social Comparison") +
   theme(
     strip.text = element_text(size = 12, face = "bold"),
@@ -842,7 +894,7 @@ sb_situation <- study_long %>%
             fontface = "bold", col = "white") +
   theme_bw() +
   labs(x = "Aspects",
-       y = "Response Ratio",
+       y = "Proportion",
        title = "Pers Experiences") +
   scale_y_continuous(expand = c(0, 0)) +
   theme(
@@ -870,7 +922,7 @@ sb_control <- study_long %>%
   scale_y_continuous(expand = c(0, 0)) +
   theme_bw() +
   labs(x = "Aspects",
-       y = "Response Ratio",
+       y = "Proportion",
        title = "Controllable") +
   theme(
     strip.text = element_text(size = 12, face = "bold"),
@@ -897,7 +949,7 @@ sb_active <- study_long %>%
   scale_y_continuous(expand = c(0, 0)) +
   theme_bw() +
   labs(x = "Aspects",
-       y = "Response Ratio",
+       y = "Proportion",
        title = "Active Choice") +
   theme(
     strip.text = element_text(size = 12, face = "bold"),
@@ -935,7 +987,7 @@ sb_frequency <- study_long %>%
   scale_y_continuous(expand = c(0, 0)) +
   theme_bw() +
   labs(x = "Aspects",
-       y = "Response Ratio",
+       y = "Proportion",
        title = "Frequency") +
   theme(
     strip.text = element_text(size = 12, face = "bold"),
