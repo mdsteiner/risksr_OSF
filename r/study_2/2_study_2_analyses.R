@@ -620,12 +620,13 @@ pc_soep <- study_joint %>%
 
 hist_soep <- study_joint %>%
   select(rating_s1, rating_s2, partid) %>%
-  mutate(delta_rating = rating_s2 - rating_s1) %>%
+  mutate(delta_rating = factor(rating_s2 - rating_s1, levels = -10:10)) %>%
   ggplot(aes(delta_rating)) +
-  geom_histogram(col = "#646464", alpha = .6, bins = 60) +
+  geom_bar(col = "white", fill = "black") +
+  scale_x_discrete(drop = FALSE, breaks = seq(-10, 10, by = 2)) +
   labs(x = expression(bold(Delta) ~ bold(Risk) ~ bold(Preference)),
        y = "Frequency") +
-  coord_cartesian(xlim = c(-10, 10)) +
+  coord_cartesian(xlim = c(1, 21)) +
   theme_classic() +
   theme(
     axis.text.x = element_text(size = 13, colour = "black"),
@@ -654,10 +655,10 @@ hist_soe <- study_joint %>%
   select(pred_VUM_s1, pred_VUM_s2, partid) %>%
   mutate(delta_VUM = pred_VUM_s2 - pred_VUM_s1) %>%
   ggplot(aes(delta_VUM)) +
-  geom_histogram(col = "#646464", alpha = .6, bins = 60) +
+  geom_histogram(col = "white", fill = "black", bins = 20) +
   labs(x = expression(bold(Delta) ~ bold(Aggr.) ~ bold(Strength) ~ bold(of) ~ bold(Evidence)),
        y = "Frequency") +
-  coord_cartesian(xlim = c(-100, 100)) +
+  coord_cartesian(xlim = c(-100, 100), ylim = c(0, 35)) +
   theme_classic() +
   theme(
     axis.text.x = element_text(size = 13, colour = "black"),
@@ -669,8 +670,8 @@ ps <- study_joint %>%
   mutate(delta_VUM = pred_VUM_s2 - pred_VUM_s1,
          delta_rating = rating_s2 - rating_s1) %>%
   ggplot(aes(delta_VUM, delta_rating)) +
-  geom_point(alpha = .6) +
-  geom_smooth(method = "lm", se = FALSE, col = "#d20537") +
+  geom_point(col = "black", alpha = .6) +
+  geom_smooth(method = "lm", se = FALSE, col = "#c41449") +
   coord_cartesian(xlim = c(-100, 100), ylim = c(-10, 10)) +
   labs(x = expression(bold(Delta) ~ bold(Aggr.) ~ bold(Strength) ~ bold(of) ~ bold(Evidence)),
        y = expression(bold(Delta) ~ bold(Risk) ~ bold(Preference))) +

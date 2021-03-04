@@ -314,6 +314,10 @@ res_fit_s1 <- eval_fit(WoE_mod_s1, SoE_mod_s1, age_mod_s1, sex_mod_s1,
 res_pred_s2 <- eval_pred(WoE_mod_s1, SoE_mod_s1, age_mod_s1, sex_mod_s1,
                          demo_mod_s1, study_s2)
 
+### evaluate the prediction performance and similarities of models
+res_pred_s1_to_s2 <- eval_pred(WoE_mod_s1, SoE_mod_s1, age_mod_s1, sex_mod_s1,
+                               demo_mod_s1, s1_to_s2)
+
 ### Study 2 to Study 1 --------------------------------------------------
 # fit WoE mod
 WoE_mod_s2 <- stan_polr(rating_f ~ m_aspects,
@@ -358,100 +362,14 @@ res_fit_s2 <- eval_fit(WoE_mod_s2, SoE_mod_s2, age_mod_s2, sex_mod_s2,
 res_pred_s1 <- eval_pred(WoE_mod_s2, SoE_mod_s2, age_mod_s2, sex_mod_s2,
                          demo_mod_s2, study_s1)
 
-### Cross-Study analysis from Study 1 to Study 2 -------------------------------
-# fit WoE mod
-WoE_mod_cross_s1 <- stan_polr(rating_f ~ m_aspects,
-                        data = s1_to_s2, 
-                        prior = R2(.25, what = "median"),
-                        prior_counts = dirichlet(rep(1, 11)),
-                        iter = 10000, chains = 4)
-
-# fit SoE mod
-SoE_mod_cross_s1 <- stan_polr(rating_f ~ m_risk,
-                        data = s1_to_s2, 
-                        prior = R2(.25, what = "median"),
-                        prior_counts = dirichlet(rep(1, 11)),
-                        iter = 10000, chains = 4)
-
-# fit age mod
-age_mod_cross_s1 <- stan_polr(rating_f ~ age,
-                        data = s1_to_s2, 
-                        prior = R2(.25, what = "median"),
-                        prior_counts = dirichlet(rep(1, 11)),
-                        iter = 10000, chains = 4)
-
-# fit sex mod
-sex_mod_cross_s1 <- stan_polr(rating_f ~ sex,
-                        data = s1_to_s2, 
-                        prior = R2(.25, what = "median"),
-                        prior_counts = dirichlet(rep(1, 11)),
-                        iter = 10000, chains = 4)
-
-# fit demo mod
-demo_mod_cross_s1 <- stan_polr(rating_f ~ age + sex + yearsofedu + income + job,
-                         data = s1_to_s2, 
-                         prior = R2(.25, what = "median"),
-                         prior_counts = dirichlet(rep(1, 11)),
-                         iter = 10000, chains = 4)
-
-### evaluate the fitting performance and similarities of models
-res_fit_cross_s1 <- eval_fit(WoE_mod_cross_s1, SoE_mod_cross_s1, age_mod_cross_s1,
-                             sex_mod_cross_s1, demo_mod_cross_s1, s1_to_s2)
-
 ### evaluate the prediction performance and similarities of models
-res_pred_cross_s2 <- eval_pred(WoE_mod_cross_s1, SoE_mod_cross_s1,
-                               age_mod_cross_s1, sex_mod_cross_s1,
-                               demo_mod_cross_s1, s2_to_s1)
-
-### Cross-Study analysis from Study 2 to Study 1 -------------------------------
-# fit WoE mod
-WoE_mod_cross_s2 <- stan_polr(rating_f ~ m_aspects,
-                        data = s2_to_s1, 
-                        prior = R2(.25, what = "median"),
-                        prior_counts = dirichlet(rep(1, 11)),
-                        iter = 10000, chains = 4)
-
-# fit SoE mod
-SoE_mod_cross_s2 <- stan_polr(rating_f ~ m_risk,
-                        data = s2_to_s1, 
-                        prior = R2(.25, what = "median"),
-                        prior_counts = dirichlet(rep(1, 11)),
-                        iter = 10000, chains = 4)
-
-# fit age mod
-age_mod_cross_s2 <- stan_polr(rating_f ~ age,
-                        data = s2_to_s1, 
-                        prior = R2(.25, what = "median"),
-                        prior_counts = dirichlet(rep(1, 11)),
-                        iter = 10000, chains = 4)
-
-# fit sex mod
-sex_mod_cross_s2 <- stan_polr(rating_f ~ sex,
-                        data = s2_to_s1, 
-                        prior = R2(.25, what = "median"),
-                        prior_counts = dirichlet(rep(1, 11)),
-                        iter = 10000, chains = 4)
-
-# fit demo mod
-demo_mod_cross_s2 <- stan_polr(rating_f ~ age + sex + yearsofedu + income + job,
-                         data = s2_to_s1, 
-                         prior = R2(.25, what = "median"),
-                         prior_counts = dirichlet(rep(1, 11)),
-                         iter = 10000, chains = 4)
-
-### evaluate the fitting performance and similarities of models
-res_fit_cross_s2 <- eval_fit(WoE_mod_cross_s2, SoE_mod_cross_s2, age_mod_cross_s2,
-                             sex_mod_cross_s2, demo_mod_cross_s2, s2_to_s1)
-
-### evaluate the prediction performance and similarities of models
-res_pred_cross_s1 <- eval_pred(WoE_mod_cross_s2, SoE_mod_cross_s2, age_mod_cross_s2,
-                               sex_mod_cross_s2, demo_mod_cross_s2, s1_to_s2)
+res_pred_s2_to_s1 <- eval_pred(WoE_mod_s2, SoE_mod_s2, age_mod_s2, sex_mod_s2,
+                               demo_mod_s2, s2_to_s1)
 
 ### save everything ============================================================
 
-save(res_fit_s1, res_fit_s2, res_pred_s1, res_pred_s2, res_fit_cross_s1,
-     res_pred_cross_s2, res_fit_cross_s2, res_pred_cross_s1,
-     file = "data/study_1/res_regressions.RData")
+save(res_fit_s1, res_fit_s2, res_pred_s1, res_pred_s2, res_pred_s1_to_s2,
+     res_pred_s2_to_s1, file = "data/study_1/res_regressions.RData")
 
 ### analyse results ============================================================
 
@@ -472,22 +390,31 @@ cat(paste(apply(tab_s1, 1, paste, collapse = " & "),
           collapse = "\\\\ \n"))
 
 
-# predictions from s1 to s2 and s2 to s1
+tab_s2 <- matrix("-", nrow = 5, ncol = 5)
+tab_s2[lower.tri(tab_s2)] <- round(res_fit_s2$same_pred, 2)[lower.tri(res_fit_s2$same_pred)]
+tab_s2[upper.tri(tab_s2)] <- round(res_fit_s2$same_pred_cor, 2)[upper.tri(res_fit_s2$same_pred_cor)]
+
+tab_s2 <- cbind(c("SoE", "WoE", "Age", "Sex", "5 soc. dem. pred."),
+                tab_s2)
+cat(paste(apply(tab_s2, 1, paste, collapse = " & "),
+          collapse = "\\\\ \n"))
+
+
+# predictions of s1 based on fit of s2
 res_pred_s1
+# predictions of s2 based on fit of s1
 res_pred_s2
 
 # cross_study analyses
-# fit
-res_fit_cross_s1
-res_fit_cross_s2
 
-# predictions
-res_pred_cross_s1
-res_pred_cross_s2
+# predictions from s1 to s2 base on fit of s1
+res_pred_s1_to_s2
+# predictions from s2 to s1 base on fit of s2
+res_pred_s2_to_s1
 
 tab_cross_s1 <- matrix("-", nrow = 5, ncol = 5)
-tab_cross_s1[lower.tri(tab_cross_s1)] <- round(res_pred_cross_s1$same_pred, 2)[lower.tri(res_pred_cross_s1$same_pred)]
-tab_cross_s1[upper.tri(tab_cross_s1)] <- round(res_pred_cross_s1$same_pred_cor, 2)[upper.tri(res_pred_cross_s1$same_pred_cor)]
+tab_cross_s1[lower.tri(tab_cross_s1)] <- round(res_pred_s1_to_s2$same_pred, 2)[lower.tri(res_pred_s1_to_s2$same_pred)]
+tab_cross_s1[upper.tri(tab_cross_s1)] <- round(res_pred_s1_to_s2$same_pred_cor, 2)[upper.tri(res_pred_s1_to_s2$same_pred_cor)]
 
 tab_cross_s1 <- cbind(c("SoE", "WoE", "Age", "Sex", "5 soc. dem. pred."),
                       tab_cross_s1)
@@ -496,8 +423,8 @@ cat(paste(apply(tab_cross_s1, 1, paste, collapse = " & "),
 
 
 tab_cross_s2 <- matrix("-", nrow = 5, ncol = 5)
-tab_cross_s2[lower.tri(tab_cross_s2)] <- round(res_pred_cross_s2$same_pred, 2)[lower.tri(res_pred_cross_s2$same_pred)]
-tab_cross_s2[upper.tri(tab_cross_s2)] <- round(res_pred_cross_s2$same_pred_cor, 2)[upper.tri(res_pred_cross_s2$same_pred_cor)]
+tab_cross_s2[lower.tri(tab_cross_s2)] <- round(res_pred_s2_to_s1$same_pred, 2)[lower.tri(res_pred_s2_to_s1$same_pred)]
+tab_cross_s2[upper.tri(tab_cross_s2)] <- round(res_pred_s2_to_s1$same_pred_cor, 2)[upper.tri(res_pred_s2_to_s1$same_pred_cor)]
 
 tab_cross_s2 <- cbind(c("SoE", "WoE", "Age", "Sex", "5 soc. dem. pred."),
                       tab_cross_s2)
@@ -508,9 +435,9 @@ cat(paste(apply(tab_cross_s2, 1, paste, collapse = " & "),
 pdf("plots/study_1/mds_ord_models.pdf", width = 13, height = 4)
 p1 <- create_mds(res_fit_s1$same_pred,
            c("SoE", "WoE", "Age", "Sex", "5 soc. dem. pred.")) 
-p2 <- create_mds(res_pred_cross_s1$same_pred,
+p2 <- create_mds(res_pred_s1_to_s2$same_pred,
              c("SoE", "WoE", "Age", "Sex", "5 soc. dem. pred.")) 
-p3 <- create_mds(res_pred_cross_s1$same_pred,
+p3 <- create_mds(res_pred_s2_to_s1$same_pred,
              c("SoE", "WoE", "Age", "Sex", "5 soc. dem. pred."))
 p1 + p2 + p3 +
   plot_annotation(tag_levels =  "a", tag_suffix = ")")
